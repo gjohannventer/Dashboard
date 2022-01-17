@@ -23,8 +23,8 @@ spec:
       containers:
       - env:
         - name: JAEGER_HOST
-          value: my-traces-agent.observability.svc.cluster.local
-        image: andriiiudin/nd064-trace-backend
+          value: simplest-query.observability.svc.cluster.local
+        image: gjohannventer/dashboard_backend:latest
         imagePullPolicy: Always
         name: backend
         ports:

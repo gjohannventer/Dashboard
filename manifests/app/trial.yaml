@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
+    sidecar.jaegertracing.io/inject: 'true'
     prometheus.io/scrape: "true"
     prometheus.io/path: /metrics
     prometheus.io/port: trialport
@@ -21,7 +22,7 @@ spec:
     spec:
       containers:
       - name: trial
-        image: linuxrobotgeek/observability-trial:latest
+        image: gjohannventer/dashboard_trial:latest
         imagePullPolicy: Always
         ports:
         - name: trialport
@@ -40,7 +41,7 @@ spec:
   ports:
     - name: trial
       protocol: TCP
-      port: 8080
+      port: 8082
       targetPort: trialport
   type: LoadBalancer
 ---

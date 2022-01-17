@@ -16,7 +16,6 @@ from jaeger_client import Config
 from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
 
 # Prometheus
-from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
 from prometheus_flask_exporter import PrometheusMetrics
 
 
@@ -35,7 +34,7 @@ app.config[
 mongo = PyMongo(app)
 
 # Prometheus metrics
-metrics = GunicornInternalPrometheusMetrics(app, group_by='endpoint')
+metrics = PrometheusMetrics(app, group_by='endpoint')
 metrics.info('backend', 'backend Api Metrics', version='1.0.1')
 metrics.register_default(
     metrics.counter(
@@ -65,8 +64,7 @@ def init_tracer(service):
             'local_agent': {'reporting_host': JAEGER_HOST },
         },
         service_name=service,
-        validate=True,
-        metrics_factory=PrometheusMetricsFactory(service_name_label=service),
+        validate=True
     )
 
     return config.initialize_tracer()

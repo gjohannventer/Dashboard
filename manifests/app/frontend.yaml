@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: linuxrobotgeek/observability-frontend:latest
+        image: gjohannventer/dashboard_frontend:latest
         imagePullPolicy: Always
         ports:
         - name: frontendport

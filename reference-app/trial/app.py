@@ -13,7 +13,6 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 # Prometheus
-from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
 from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
@@ -21,7 +20,7 @@ FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
 # Prometheus metrics
-metrics = GunicornInternalPrometheusMetrics(app, group_by='endpoint')
+metrics = PrometheusMetrics(app, group_by='endpoint')
 metrics.info("trial", "Trial App Metrics", version="1.0.1")
 metrics.register_default(
     metrics.counter(
