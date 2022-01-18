@@ -1,7 +1,22 @@
 from flask import Flask, render_template, request
+import logging
 from prometheus_flask_exporter import PrometheusMetrics
 
+
+# Jaeger
+from jaeger_client import Config
+from jaeger_client.metrics.prometheus import PrometheusMetricsFactory
+
+# Tracing
+from flask_opentracing import FlaskTracing
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+
 app = Flask(__name__)
+
+# Instruments
+FlaskInstrumentor().instrument_app(app)
+RequestsInstrumentor().instrument()
 
 # Prometheus metrics
 metrics = PrometheusMetrics(app, group_by='endpoint')
@@ -17,6 +32,28 @@ metric_endpoint_counter = metrics.counter(
     labels={'endpoint': lambda: request.endpoint}
 )
 
+# Initialize Jeager
+def init_tracer(service):
+    logging.getLogger('').handlers = []
+    logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+
+    config = Config(
+        config={
+            'sampler': {
+                'type': 'const',
+                'param': 1,
+            },
+            'logging': True,
+        },
+        service_name=service,
+        validate=True
+    )
+
+    # this call also sets opentracing.tracer
+    return config.initialize_tracer()
+
+tracer = init_tracer('frontend')
+tracing = FlaskTracing(tracer, True, app)
 
 @app.route("/")
 @metric_endpoint_counter

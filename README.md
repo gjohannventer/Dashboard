@@ -1,33 +1,61 @@
 **Note:** For the screenshots, you can store all of your answer images in the `answer-img` directory.
 
+[//]: # (Image References)
+[image1]: ./answer-img/default_namespace.png
+[image2]: ./answer-img/observability_namespace.png
+[image3]: ./answer-img/monitoring_namespace.png
+[image4]: ./answer-img/grafana_home.png
+[image5]: ./answer-img/grafana_datasources.png
+[image6]: ./answer-img/basic_dashboard_prometheus.png
+
 ## Verify the monitoring installation
-answer-img/pods_default_namespace.png
-answer-img/pods_monitoring_namespace.png
-answer-img/pods_observability_namespace.png
-answer-img/services_default_namespace.png
-answer-img/services_monitoring_namespace.png
-answer-img/services_observabilty_namespace.png
+* Run `kubectl` command to show the running pods and services for all components. Take a screenshot of the output and include it here to verify the installation
+![][image1]  
+![][image2]  
+![][image3]
 
 ## Setup the Jaeger and Prometheus source
-answer-img/grafana_homepage.png
+*TODO: Expose Grafana to the internet and then setup Prometheus as a data source. Provide a screenshot of the home page after logging into Grafana.
+```
+[Get prometheus grafana pod name with command: kubectl get po -n monitoring]
+-######## = unique id of pod
+ kubectl port-forward -n monitoring prometheus-grafana-######## 3000
+```
+
+![][image4]
+
+
+
+![][image5]
 ## Create a Basic Dashboard
-answer-img/basic_grafana_dashboard.png
+* Create a dashboard in Grafana that shows Prometheus as a source. Take a screenshot and include it here.  
+
+![][image6]
 
 ## Describe SLO/SLI
 My Service level indicators would be the following for the two service level objectives of "monthly uptime" and "response time"
 
 A Service-Level Objective (SLO) is a measurable goal set by the SRE team.
-The SLIs (Service Level indicators) will be our actual measurements of the "monthly uptime" and "request response time" objectives to verify whether we have reached the goals (by means of metrics)
+The SLIs (Service Level indicators) will be our actual measurements of the "monthly uptime" and "request response time" objectives to verify whether we have reached the goals (by means of metrics which are actual measurements)
 that we have setup by our SLO (Service Level objectives)
 
 
 ## Creating SLI metrics.
 *TODO:* It is important to know why we want to measure certain metrics for our customer. Describe in detail 5 metrics to measure these SLIs. 
-- The overall percentage rate of uptime during the month [monthly uptime]
-- The overall percentage of downtime during the month [monthly uptime]
-- The average time taken to return a response when a request was made in a month [response time]
-- The average requests per day during the month [response time]
-- The percentage of failed responses (errors) during the month [response time]
+
+We want to base our SLI metrics on the Four Golden Signals
+- **Latency** — The time taken to serve a request (usually measured in ms)
+- **Traffic** — The amount of stress on a system from demand (such as the number of HTTP requests/second).
+- **Errors** — The number of requests that are failing (such as number of HTTP 500 responses).
+- **Saturation** — The overall capacity of a service (such as the percentage of memory or CPU used).
+
+Sone of the metrics that can be measured for the SLIs are(They can also overlap one another):
+- The average response time of requests [Latency]
+- The uptime of the different services (backend, frontend, trial) [Traffic]
+- The amount of failed responses per second [Traffic, Errors]
+- The average bandwith being used by the network [Traffic, Saturation]
+- Amount of CPU and Ram used by the different services (backend, frontend, trial) [Saturation]
+
 ## Create a Dashboard to measure our SLIs
 *TODO:* Create a dashboard to measure the uptime of the frontend and backend services We will also want to measure to measure 40x and 50x errors. Create a dashboard that show these values over a 24 hour period and take a screenshot.
 
