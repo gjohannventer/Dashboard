@@ -23,7 +23,7 @@ spec:
       containers:
       - env:
         - name: JAEGER_HOST
-          value: simplest-query.observability.svc.cluster.local
+          value: simplest-agent.observability.svc.cluster.local
         image: gjohannventer/dashboard_backend:latest
         imagePullPolicy: Always
         name: backend

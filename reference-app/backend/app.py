@@ -69,7 +69,7 @@ def init_tracer(service):
 
     return config.initialize_tracer()
 
-tracer  = init_tracer('backend')
+tracer = init_tracer('backend')
 tracing = FlaskTracing(tracer, True, app)
 
 
