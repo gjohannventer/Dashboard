@@ -11,7 +11,7 @@ metadata:
     release: prometheus
   name: backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -21,12 +21,9 @@ spec:
         app: backend
     spec:
       containers:
-      - env:
-        - name: JAEGER_HOST
-          value: simplest-agent.observability.svc.cluster.local
+      - name: backend
         image: gjohannventer/dashboard_backend:latest
         imagePullPolicy: Always
-        name: backend
         ports:
         - name: backendport
           containerPort: 8080

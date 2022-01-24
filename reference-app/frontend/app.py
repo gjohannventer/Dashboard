@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import logging
 from prometheus_flask_exporter import PrometheusMetrics
 
@@ -59,6 +59,56 @@ tracing = FlaskTracing(tracer, True, app)
 @metric_endpoint_counter
 def homepage():
     return render_template("main.html")
+
+class InvalidRequest(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        print('I are here!')
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        payload_dictionary = dict(self.payload or ())
+        payload_dictionary["message"] = self.message
+        return payload_dictionary
+
+@app.errorhandler(InvalidRequest)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+@app.route("/403")
+def forbidden():
+    status_code = 403
+    raise InvalidRequest(
+        "Raising status code: {}".format(status_code), status_code=status_code
+    )
+
+@app.route("/404")
+def not_found():
+    status_code = 404
+    raise InvalidRequest(
+        "Raising status code: {}".format(status_code), status_code=status_code
+    )
+
+@app.route("/500")
+def internal_server_error():
+    status_code = 500
+    raise InvalidRequest(
+        "Raising status code: {}".format(status_code), status_code=status_code
+    )
+
+@app.route("/503")
+def service_unavailable():
+    status_code = 503
+    raise InvalidRequest(
+        "Raising status code: {}".format(status_code), status_code=status_code
+    )
 
 if __name__ == "__main__":
     app.run()

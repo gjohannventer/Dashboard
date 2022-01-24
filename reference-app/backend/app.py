@@ -48,8 +48,6 @@ metric_endpoint_counter = metrics.counter(
 )
 
 # Initialize Jeager
-JAEGER_HOST = getenv('JAEGER_HOST', 'localhost') # help jaeger instance in observabilty namespace to find app in default namespace
-
 def init_tracer(service):
     logging.getLogger('').handlers = []
     logging.basicConfig(format='%(message)s', level=logging.DEBUG)
@@ -61,7 +59,6 @@ def init_tracer(service):
                 'param': 1,
             },
             'logging': True,
-            'local_agent': {'reporting_host': JAEGER_HOST },
         },
         service_name=service,
         validate=True
@@ -107,6 +104,7 @@ class InvalidRequest(Exception):
 
     def __init__(self, message, status_code=None, payload=None):
         Exception.__init__(self)
+        print('I are here!')
         self.message = message
         if status_code is not None:
             self.status_code = status_code
@@ -116,6 +114,12 @@ class InvalidRequest(Exception):
         payload_dictionary = dict(self.payload or ())
         payload_dictionary["message"] = self.message
         return payload_dictionary
+
+@app.errorhandler(InvalidRequest)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 @app.route("/403")
 def forbidden():
