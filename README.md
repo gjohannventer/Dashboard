@@ -11,6 +11,8 @@
 [image9]: ./answer-img/jaeger-trace.png
 [image10]: ./answer-img/jeager-grafana.png
 [image11]: ./answer-img/mongo_error.png
+[image12]: ./answer-img/metrics-1.png
+[image13]: ./answer-img/metrics-2.png
 
 ## Verify the monitoring installation
 * Run `kubectl` command to show the running pods and services for all components. Take a screenshot of the output and include it here to verify the installation
@@ -113,7 +115,7 @@ image11
 *TODO:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name four SLIs that you would use to measure the success of this SLO.
 
 - Uptime
-- Failure rate, 
+- Failure rate and errors, 
 - Latency
 - Resource usage [Saturation]
 
@@ -123,7 +125,23 @@ image11
 - Uptime: check that there was no pod downtime and that they are healthy (pod in crashbackloop or error state can cause pod not to restart
 - Failure Rate: Errors per second / response rate per second. 
 - Latency: Response time for our requests)
-- Resource usage: CPU, RAM usage per pod.
+- Resource usage: CPU, Memory usage per pod.
 
 ## Final Dashboard
 *TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.  
+
+![][image12]
+![][image13]
+
+- Uptime Backend Service
+- Uptime Frontend Service
+- 50x Errors
+- 40x Errors
+- Failed responses per second
+- Average response time on 200(success) returns
+- backend memory usage
+- frontend memory usage
+- backend CPU usage
+- frontend CPU usage
+- Pod restarts per namespace
+- Pods not ready
