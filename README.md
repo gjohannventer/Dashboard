@@ -75,11 +75,11 @@ PROMQL: sum(up{container=~"frontend"}) by (pod)
 
 X40 errors:
 Source: Prometheus
-PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"403|404|410"}) by (status,container)
+PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"403|404|410"})
 
 50x errors
 Source: Prometheus
-PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"500|503"}) by (status,container)
+PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"500|503"})
 
 ![][image7]
 
