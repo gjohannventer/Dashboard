@@ -98,18 +98,33 @@ Description: When the user calls the /star endpoint of the backend service it th
 ## Creating SLIs and SLOs
 *TODO:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name four SLIs that you would use to measure the success of this SLO.
 
+- Latency
 - Uptime
 - Failure rate and errors, 
-- Latency
 - Resource usage [Saturation]
 
 ## Building KPIs for our plan
 *TODO*: Now that we have our SLIs and SLOs, create a list of 2-3 KPIs to accurately measure these metrics as well as a description of why those KPIs were chosen. We will make a dashboard for this, but first write them down here.
 
-- Uptime: check that there was no pod downtime and that they are healthy (pod in crashbackloop or error state can cause pod not to restart
-- Failure Rate: Errors per second / response rate per second. 
-- Latency: Response time for our requests)
-- Resource usage: CPU, Memory usage per pod.
+2-3 KPIs per SLI
+
+### Latency
+- request time (in ms) for successful requests
+- request time (in ms) for failed requests
+
+### Uptime
+- Uptime of the individual services (backend and frontend)
+- Pod restarts per namespace
+- checking that pods are in ready state and not in an error state
+
+### Failure rate and errors 
+We need to understand the type of errors that are happening. Jeager Tracing can help with this.
+- 50x errors which are severe because requests are unsuccessful and it can also cause system crashes
+- 40x errors which are not as severe but still needs attention
+
+### Resource usage [Saturation]
+- CPU usage on each of the services to see if the CPU is not oversaturated (backend and frontend)
+- Memory usage on each of the seperate services to see if the services are not running out of memory because of big processos or requests (backend and frontend)
 
 ## Final Dashboard
 *TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.  
