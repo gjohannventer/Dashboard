@@ -1,24 +1,11 @@
 **Note:** For the screenshots, you can store all of your answer images in the `answer-img` directory.
 
-[//]: # (Image References)
-[image1]: ./answer-img/default_namespace.png
-[image3]: ./answer-img/monitoring_namespace.png
-[image4]: ./answer-img/grafana_home.png
-[image5]: ./answer-img/grafana_datasources.png
-[image6]: ./answer-img/basic_dashboard_prometheus.png
-[image7]: ./answer-img/40x_50x.png
-[image8]: ./answer-img/api-span.png
-[image9]: ./answer-img/jaeger-trace.png
-[image10]: ./answer-img/jeager-grafana.png
-[image11]: ./answer-img/mongo_error.png
-[image12]: ./answer-img/metrics-1.png
-[image13]: ./answer-img/metrics-2.png
-
 ## Verify the monitoring installation
 * Run `kubectl` command to show the running pods and services for all components. Take a screenshot of the output and include it here to verify the installation
 * NOTE: I placed the the Jaeger services into the default namespace along with the apps otherwise Jaeger does not see the apps [After various attempts of placing it inside the observability namespace and even enabling cluster wide tracing and using a Jeager_host variable to point to the observability jeager-agent with its port]. (see : simplest(jaeger instance) is in default namespace where the apps are located)
-![][image1]
-![][image3]
+
+![default namespace](answer-img/default_namespace.png)
+![monitoring namespace](answer-img/monitoring_namespace.png)
 
 ## Setup the Jaeger and Prometheus source
 *TODO: Expose Grafana to the internet and then setup Prometheus as a data source. Provide a screenshot of the home page after logging into Grafana.
@@ -28,16 +15,14 @@
  kubectl port-forward -n monitoring prometheus-grafana-######## 3000
 ```
 
-![][image4]
+![grafana home](answer-img/grafana_home.png)
 
 
-
-![][image5]
+![grafana datasources](answer-img/grafana_datasources.png)
 ## Create a Basic Dashboard
 * Create a dashboard in Grafana that shows Prometheus as a source. Take a screenshot and include it here.  
 
-![][image6]
-
+![dashboard_prometheus](answer-img/basic_dashboard_prometheus.png)
 ## Describe SLO/SLI
 My Service level indicators would be the following for the two service level objectives of "monthly uptime" and "response time"
 
@@ -81,17 +66,17 @@ PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"403|
 Source: Prometheus \
 PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"500|503"})
 
-![][image7]
+![40x and 50x errors](answer-img/40x_50x.png)
 
 ## Tracing our Flask App
 *TODO:*  We will create a Jaeger span to measure the processes on the backend. Once you fill in the span, provide a screenshot of it here. Also provide a (screenshot) sample Python file containing a trace and span code used to perform Jaeger traces on the backend service.
 
-![][image9]
-![][image8]
+![jaeger trace](answer-img/jaeger-trace.png)
+![api span](answer-img/api-span.png)
 
 ## Jaeger in Dashboards
 *TODO:* Now that the trace is running, let's add the metric to our current Grafana dashboard. Once this is completed, provide a screenshot of it here.
-![][image10]
+![jeager grafana](answer-img/jeager-grafana.png)
 
 ## Report Error
 *TODO:* Using the template below, write a trouble ticket for the developers, to explain the errors that you are seeing (400, 500, latency) and to let them know the file that is causing the issue also include a screenshot of the tracer span to demonstrate how we can user a tracer to locate errors easily.
@@ -109,8 +94,7 @@ Affected Area: Backend Service
 Severity: High
 
 Description: When the user calls the /star endpoint of the backend service it throws an internal server error. The error points to the fact that the mongo db url does not exist in the cluster 
-
-![][image11]
+![mongo error](answer-img/mongo_error.png)
 ## Creating SLIs and SLOs
 *TODO:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name four SLIs that you would use to measure the success of this SLO.
 
@@ -130,8 +114,9 @@ Description: When the user calls the /star endpoint of the backend service it th
 ## Final Dashboard
 *TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.  
 
-![][image12]
-![][image13]
+![metrics 1](answer-img/metrics-1.png)
+![metrics 2](answer-img/metrics-2.png)
+
 
 - Uptime Backend Service
 - Uptime Frontend Service
