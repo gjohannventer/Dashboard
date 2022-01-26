@@ -65,20 +65,20 @@ Sone of the metrics that can be measured for the SLIs are(They can also overlap 
 ## Create a Dashboard to measure our SLIs
 *TODO:* Create a dashboard to measure the uptime of the frontend and backend services We will also want to measure to measure 40x and 50x errors. Create a dashboard that show these values over a 24 hour period and take a screenshot.
 
-Backend uptime:
-Source: Prometheus
+Backend uptime: \
+Source: Prometheus \
 PROMQL: sum(up{container=~"backend"}) by (pod)
 
-Frontend uptime:
-Source: Prometheus
+Frontend uptime: \
+Source: Prometheus \
 PROMQL: sum(up{container=~"frontend"}) by (pod)
 
-X40 errors:
-Source: Prometheus
+X40 errors: \
+Source: Prometheus \
 PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"403|404|410"})
 
-50x errors
-Source: Prometheus
+50x errors \
+Source: Prometheus \
 PROMQL: sum(flask_http_request_total{container=~"backend|frontend",status=~"500|503"})
 
 ![][image7]
@@ -109,7 +109,7 @@ Affected Area: Backend Service
 Severity: High
 
 Description: When the user calls the /star endpoint of the backend service it throws an internal server error. The error points to the fact that the mongo db url does not exist in the cluster 
-image11
+
 ![][image11]
 ## Creating SLIs and SLOs
 *TODO:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name four SLIs that you would use to measure the success of this SLO.
